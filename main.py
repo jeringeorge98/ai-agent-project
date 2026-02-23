@@ -1,3 +1,4 @@
+from fuctions.get_files_content import get_file_content
 from fuctions.get_files_info import get_files_info
 import os
 from dotenv import load_dotenv
@@ -20,7 +21,8 @@ if api_key is None:
 
 def main():
     
-    get_files_info('calculator')
+    #get_files_info('calculator')
+    get_file_content('calculator',"lerm_ipsum.txt")
     # # user_prompt = "Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."
     # response = client.models.generate_content(
     #     model="gemini-2.5-flash",
