@@ -1,5 +1,25 @@
 
 import os
+from google.genai import types
+
+schema_write_file_content = types.FunctionDeclaration(
+    name="write_file_content",
+    description="Writing content in the specfied file given by the file path.Takes file path and content as arguements",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="Relative File path where the target file resides.This file path is relative and needs to be converted to absolute.",
+            ),
+            "content": types.Schema(
+               type = types.Type.STRING,
+               description= "Content that needs to be written into a file."
+            )
+        },
+        required=["file_path","content"]
+    ),
+)
 def write_file_content(working_dir, file_path,content):
     try:
     #Acess check

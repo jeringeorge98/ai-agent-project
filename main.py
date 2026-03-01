@@ -1,3 +1,5 @@
+from call_functions import available_functions
+from fuctions.prompts.prompts import system_prompt
 from fuctions.get_files_content import get_file_content
 from fuctions.get_files_info import get_files_info
 import os
@@ -22,23 +24,28 @@ if api_key is None:
 def main():
     
     #get_files_info('calculator')
-    get_file_content('calculator',"lerm_ipsum.txt")
-    # # user_prompt = "Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."
-    # response = client.models.generate_content(
-    #     model="gemini-2.5-flash",
-    #     contents=messages
-    #     )
-    # is_verbose = args.verbose
-    # if response.usage_metadata is None:
-    #     raise RuntimeError(f"Response failed with error")    
-    # prompt_token_count = response.usage_metadata.prompt_token_count
-    # response_token_count = response.usage_metadata.candidates_token_count
-    # response_text = response.text
-
-    # if is_verbose:
-    #     print(f"User prompt:{args.user_prompt} \n Prompt tokens:{prompt_token_count}\n Response tokens:{response_token_count}\nResponse:{response_text}") 
-    # else :
-    #     print(f"Response : {response_text}")
+    #get_file_content('calculator',"lerm_ipsum.txt")
+    # user_prompt = "Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=messages,
+        config= types.GenerateContentConfig(system_instruction=system_prompt,tools=[available_functions])
+        )
+    is_verbose = args.verbose
+    if response.usage_metadata is None:
+        raise RuntimeError(f"Response failed with error")    
+    prompt_token_count = response.usage_metadata.prompt_token_count
+    response_token_count = response.usage_metadata.candidates_token_count
+    response_text = response.text
+    function_calls = response.function_calls
+    if function_calls is None : 
+     if is_verbose:
+        print(f"User prompt:{args.user_prompt} \n Prompt tokens:{prompt_token_count}\n Response tokens:{response_token_count}\nResponse:{response_text}") 
+     else :
+        print(f"Response : {response_text}")
+    else :
+        for fnc in function_calls :
+         print(f"Calling function: {fnc.name}({fnc.args})")    
 
        
 
