@@ -4,7 +4,7 @@ from os import read
 import os
 
 schema_get_files_content = types.FunctionDeclaration(
-    name="get_files_content",
+    name="get_file_content",
     description="Read the contents of the file.First check if the file is in the permitted workign directory",
     parameters=types.Schema(
         type=types.Type.OBJECT,

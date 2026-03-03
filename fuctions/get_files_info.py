@@ -50,7 +50,7 @@ def get_files_info(working_directory, directory=".")->str:
     #  print(result)
      return result
     except Exception as e:
-        return f'Error listing files:{err}'      
+        return f'Error listing files:{e}'      
    
 
 

@@ -1,3 +1,4 @@
+from call_functions import call_function
 from call_functions import available_functions
 from fuctions.prompts.prompts import system_prompt
 from fuctions.get_files_content import get_file_content
@@ -26,6 +27,7 @@ def main():
     #get_files_info('calculator')
     #get_file_content('calculator',"lerm_ipsum.txt")
     # user_prompt = "Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."
+  try:
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         contents=messages,
@@ -38,6 +40,7 @@ def main():
     response_token_count = response.usage_metadata.candidates_token_count
     response_text = response.text
     function_calls = response.function_calls
+    results = []
     if function_calls is None : 
      if is_verbose:
         print(f"User prompt:{args.user_prompt} \n Prompt tokens:{prompt_token_count}\n Response tokens:{response_token_count}\nResponse:{response_text}") 
@@ -45,7 +48,19 @@ def main():
         print(f"Response : {response_text}")
     else :
         for fnc in function_calls :
-         print(f"Calling function: {fnc.name}({fnc.args})")    
+            function_call_result = call_function(fnc,is_verbose)
+            if function_call_result.parts is None or function_call_result.parts[0] is None : 
+                raise Exception(f"Function call result is empty")
+            final_response = function_call_result.parts[0].function_response.response
+
+            if final_response is None :
+                raise Exception(f"Final response is None")
+
+            results.append(function_call_result.parts[0])
+            if is_verbose :
+                print(f"-> {function_call_result.parts[0].function_response.response}")   
+  except Exception as e :
+    print(f"Error with Exception {e}")
 
        
 

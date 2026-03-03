@@ -20,10 +20,10 @@ schema_write_file_content = types.FunctionDeclaration(
         required=["file_path","content"]
     ),
 )
-def write_file_content(working_dir, file_path,content):
+def write_file_content(working_directory, file_path,content):
     try:
     #Acess check
-     working_dir_abs = os.path.abspath(working_dir)
+     working_dir_abs = os.path.abspath(working_directory)
     
      abs_file_path = os.path.normpath(os.path.join(working_dir_abs, file_path))
      is_valid_target_dir = os.path.commonpath([working_dir_abs,abs_file_path]) == working_dir_abs
@@ -32,7 +32,7 @@ def write_file_content(working_dir, file_path,content):
      if os.path.isdir(abs_file_path):
         return f'Error : {file_path} is not a file but a directory'
 
-     print(file_path,working_dir,abs_file_path)
+     print(file_path,working_directory,abs_file_path)
      os.makedirs(exist_ok=True,name= os.path.dirname(abs_file_path))
      with open(abs_file_path,'w') as f:
         f.write(content)
